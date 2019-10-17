@@ -1,5 +1,5 @@
 #TODO: Temporary
-import-module -force C:\Users\JGrote\Documents\Github\PowerCD\BuildOutput\PowerCD\0.6.0\PowerCD.psm1
+import-module -force C:\Users\JGrote\Documents\Github\PowerCD\BuildOutput\PowerCD
 . PowerCD.Tasks
 
 Enter-Build {
@@ -15,10 +15,10 @@ task Nuget.PowerCD {
         )
         $PSModuleNugetDependencies = @{
             'Microsoft.Extensions.Configuration.CommandLine' = '2.*'
-            #'Microsoft.Extensions.Configuration.Json' = '2.*'
-            #'Microsoft.Extensions.Configuration.FileExtensions' = '2.*'
+            'Microsoft.Extensions.Configuration.Json' = '2.*'
+            'Microsoft.Extensions.Configuration.FileExtensions' = '2.*'
             'Microsoft.Extensions.Configuration.EnvironmentVariables' = '2.*'
-            #'NetEscapades.Configuration.Yaml' = '1.*'
+            'NetEscapades.Configuration.Yaml' = '1.6'
         }
         Get-PSModuleNugetDependencies $PSModuleNugetDependencies -Destination (join-path $PCDSetting.Environment.BuildOutput '/PowerConfig/0.1.0/lib') -verbose
     }
