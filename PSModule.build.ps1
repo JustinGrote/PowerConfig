@@ -1,6 +1,5 @@
-#TODO: Temporary
-
-import-module -force C:\Users\JGrote\Documents\Github\PowerCD\BuildOutput\PowerCD
+#TODO: Temporary Included Dependency, move to using the module once the refactor is more stable
+import-module -force .\Build\PowerCD
 . PowerCD.Tasks
 
 Enter-Build {
