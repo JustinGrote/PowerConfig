@@ -31,7 +31,7 @@ jobs:
           PSBUILDEXE: ${{ matrix.psversion }}
         shell: pwsh
         run: |
-          & $env:PSBUILDEXE -noninteractive -noprofile -f ./build.ps1
+          & $env:PSBUILDEXE -noninteractive -noprofile -f ./build.ps1 Build
           $myexit = $LASTEXITCODE
           if ($myexit) {exit $myexit}
       - uses: actions/upload-artifact@master
