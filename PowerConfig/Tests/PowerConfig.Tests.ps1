@@ -1,7 +1,7 @@
 Describe "PowerConfig" {
     Context "Module" {
         It "Imports Successfully" {
-            Import-Module 'C:\Users\JGrote\Documents\Github\PowerConfig\BuildOutput\PowerConfig\0.1.0\PowerConfig.psm1' -PassThru | Should -Not -BeNullOrEmpty
+            Import-Module "$(Split-Path $PCDSetting.BuildModuleOutput)" -PassThru | Should -Not -BeNullOrEmpty
         }
     }
 
