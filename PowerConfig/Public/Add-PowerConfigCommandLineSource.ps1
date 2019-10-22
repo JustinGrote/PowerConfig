@@ -3,7 +3,7 @@ function Add-PowerConfigCommandLineSource {
     [CmdletBinding(PositionalBinding=$false)]
     param (
         #The PowerConfig object to operate on
-        [Microsoft.Extensions.Configuration.ConfigurationBuilder][Parameter(Mandatory)]$InputObject,
+        [Microsoft.Extensions.Configuration.ConfigurationBuilder][Parameter(Mandatory,ValueFromPipeline)]$InputObject,
         # A hashtable that remaps arguments to their intented destination, for instance @{'-f'='force'} remaps the shorthand -f to the force key
         [HashTable]$ArgumentMap,
         #The arguments that were passed to your script. You can pass the arguments directly to this script, or supply them as a variable similar to $args (an array of strings, one statement per string)
