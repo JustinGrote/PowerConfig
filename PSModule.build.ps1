@@ -24,6 +24,10 @@ task Nuget.PowerCD {
     Nuget.PowerCD
 }
 
+task TestPester.PowerCD {
+    Test-PowerCDPester -CodeCoverage $null -Show All -ModuleManifestPath $PCDSetting.OutputModuleManifest -UseJob
+}
+
 task Clean Clean.PowerCD
 task Build Build.PowerCD,Nuget.PowerCD
 task Package Package.PowerCD

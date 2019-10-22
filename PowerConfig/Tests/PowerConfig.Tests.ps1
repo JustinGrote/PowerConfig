@@ -1,16 +1,11 @@
 Describe "PowerConfig" {
-    Context "Module" {
-        It "Imports Successfully" {
-            Import-Module "$(Split-Path $PCDSetting.BuildModuleOutput)" -PassThru | Should -Not -BeNullOrEmpty
-        }
-    }
-
     # Context "Yaml" {
     #     It "Adds a Yaml File" {
     #         New-PowerConfig | Add-PowerConfigYamlSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.yaml') | Get-PowerConfig | Write-Host
     #     }
     # }
 
+    if ($env:PowerCDModuleManifest) {Import-Module $env:PowerCDModuleManifest -Force}
     Context "Environment" {
         It "Finds Environment Variables" {
             $env:PowerConfigTest_Test1__OK = 5
