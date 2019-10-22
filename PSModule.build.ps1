@@ -13,11 +13,11 @@ task Nuget.PowerCD {
             [Parameter(ValueFromRemainingArguments)]$Args
         )
         $PSModuleNugetDependencies = @{
-            'Microsoft.Extensions.Configuration.CommandLine' = '2.0.0.0'
-            'Microsoft.Extensions.Configuration.Json' = '2.0.0.0'
-            'Microsoft.Extensions.Configuration.FileExtensions' = '2.0.0.0'
-            'Microsoft.Extensions.Configuration.EnvironmentVariables' = '2.0.0.0'
-            'NetEscapades.Configuration.Yaml' = '1.6'
+            'Microsoft.Extensions.Configuration.CommandLine' = '2.0.0'
+            'Microsoft.Extensions.Configuration.Json' = '2.0.0'
+            'Microsoft.Extensions.Configuration.FileExtensions' = '2.0.0'
+            'Microsoft.Extensions.Configuration.EnvironmentVariables' = '2.0.0'
+            'NetEscapades.Configuration.Yaml' = '1.6'            
         }
         Get-PSModuleNugetDependencies $PSModuleNugetDependencies -Destination (join-path $PCDSetting.BuildEnvironment.BuildOutput '/PowerConfig/0.1.0/lib') -NoRestore -verbose
     }

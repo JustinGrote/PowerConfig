@@ -21,4 +21,12 @@ Describe "PowerConfig" {
             Add-PowerConfigCommandLineSource -InputObject (New-PowerConfig) -ArgumentMap $argumentMap -ArgumentList $argumentlist | Get-PowerConfig | write-host
         }
     }
+
+
+    Context "Object" {
+        It "Accepts a generic Object" {
+            $h = @{test1=1;test2=2;test3=@{test4=4;test5=5}}
+            Add-PowerConfigObject -InputObject (New-PowerConfig) -Object $h | Get-PowerConfig | write-host
+        }
+    }
 }
