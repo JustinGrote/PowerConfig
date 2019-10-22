@@ -48,7 +48,6 @@ Describe 'Powershell Module' {
     }
 
     $ModuleName = $ModuleManifestFile.basename
-    write-host -fore magenta $ModuleManifestFile
     Context ($ModuleName) {
         It 'Has a valid Module Manifest' {
             if ($PSEdition -eq 'Core') {

@@ -5,5 +5,5 @@ function Get-PowerConfig {
     )
 
     $RenderedPowerConfig = $InputObject.build()
-    [ConfigurationExtensions]::AsEnumerable($RenderedPowerConfig)
+    ConvertTo-NestedHashTable ([ConfigurationExtensions]::AsEnumerable($RenderedPowerConfig))
 }

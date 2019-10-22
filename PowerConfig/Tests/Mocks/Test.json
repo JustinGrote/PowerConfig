@@ -1,0 +1,20 @@
+{
+  "override": {
+    "overrideme": "json"
+  },
+  "environment": {
+    "Level1": {
+      "Level2": "Level2Value"
+    }
+  },
+  "build": {
+    "Build1": {
+      "Level2": "Level2Value"
+    },
+    "Build2": "Build2Value"
+  },
+  "overrideme": "json",
+  "test": {
+    "Test1": "Test"
+  }
+}
