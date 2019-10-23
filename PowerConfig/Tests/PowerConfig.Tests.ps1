@@ -71,6 +71,8 @@ Describe "PowerConfig" {
         }
 
         It "Detects an environment variable change and processes the override" {
+            $ENV:PowerConfigPester_overrideme = $null
+            $ENV:PowerConfigPester_override__overrideme = $null
             $myConfig | Add-PowerConfigEnvironmentVariableSource -Prefix 'PowerConfigPester_'
             (Get-PowerConfig $myconfig).override.overrideme | Should -Be 'psobject'
             $ENV:PowerConfigPester_overrideme = 'env'
@@ -80,4 +82,16 @@ Describe "PowerConfig" {
         }
     }
 
+    Context "Complex Settings Object" {
+        $myConfig = New-PowerConfig | Add-PowerConfigObject -Object (Import-Clixml -Path (Join-Path $PSScriptRoot 'Mocks/SettingsExample.clixml')) | Get-PowerConfig
+        It "Loads the Object Config" {
+            $myConfig | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
+        }
+        It "Can read multiple parts of the config successfully" {
+            $myConfig.general.projectroot | should -Be 'C:\Users\JGrote\Documents\Github\PowerCD'
+            $myConfig.general.modulename | should -Be 'PowerCD'
+            $myConfig.build.moduleoutdir = 'C:\Users\JGrote\Documents\Github\PowerCD\BuildOutput'
+            $myConfig.build.outdir = 'C:\Users\JGrote\Documents\Github\PowerCD\BuildOutput'
+        }
+    }
 }

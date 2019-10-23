@@ -3,9 +3,6 @@
 Takes an enumerable keyvaluepair from Microsoft.Extensions.Configuration and converts it to a nested hashtable
 #>
 
-#Create a "type accelerator" of sorts
-class SortedDictionary : System.Collections.Generic.SortedDictionary[string,object] {}
-
 function ConvertTo-NestedHashTable {
     [CmdletBinding()]
     param (
@@ -18,15 +15,13 @@ function ConvertTo-NestedHashTable {
     }
     $result = [ordered]@{}
 
-    foreach ($DepthItem in $DepthGroups) {
-        $depth = $DepthItem.Name
+    foreach ($DepthItem in ($DepthGroups | Sort-Object Name)) {
         foreach ($ConfigItem in ($DepthItem.Group)) {
             $ConfigItemLevels = $ConfigItem.key.split(':')
-
             #Iterate through the levels and create them if not already present
             $lastLevel = $result
             For ($i=0;$i -lt ($ConfigItemLevels.count -1);$i++) {
-                if ($lastLevel[$ConfigItemLevels[$i]] -isnot [hashtable]) {
+                if ($lastLevel[$ConfigItemLevels[$i]] -isnot [System.Collections.Specialized.OrderedDictionary]) {
                     $lastLevel[$ConfigItemLevels[$i]] = [ordered]@{}
                 }
                 #Step up to the new level for the next activity
@@ -37,6 +32,7 @@ function ConvertTo-NestedHashTable {
             $valueKey = $ConfigItemLevels[($ConfigItemLevels.count -1)]
             $lastLevel.$valueKey = $ConfigItem.Value
         }
+        #Emit the result before foreach cleanup
     }
 
     return $result
