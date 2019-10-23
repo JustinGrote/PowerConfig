@@ -19,7 +19,7 @@ task Nuget.PowerCD {
             'Microsoft.Extensions.Configuration.EnvironmentVariables' = '2.0.0'
             'NetEscapades.Configuration.Yaml' = '1.6'            
         }
-        Get-PSModuleNugetDependencies $PSModuleNugetDependencies -Destination (join-path $PCDSetting.BuildEnvironment.BuildOutput '/PowerConfig/0.1.0/lib') -NoRestore -verbose
+        Get-PSModuleNugetDependencies $PSModuleNugetDependencies -Destination (join-path $PCDSetting.BuildModuleOutput 'lib') -NoRestore -verbose
     }
     Nuget.PowerCD
 }
