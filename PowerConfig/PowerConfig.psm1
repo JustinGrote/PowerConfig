@@ -45,10 +45,10 @@ Adds Binding Redirects for Certain Assemblies to make them more flexibly compati
                 $AssemblyToResolveStrongName = $AssemblyToResolveStrongName -replace 'Culture\=en\-us','Culture=en'
                 write-verbose "BUGFIX: $AssemblyToResolveStrongName"
             }
-
             Add-Type -AssemblyName $AssemblyToResolveStrongName -ErrorAction Stop
+            
             return [System.AppDomain]::currentdomain.GetAssemblies() | where fullname -eq $AssemblyToResolveStrongName
-            #Add Type doedsn'tAssume successful and return the object. This will be null if it doesn't exist and will fail resolution anyways
+            #Add Type doedsn't assume successful and return the object. This will be null if it doesn't exist and will fail resolution anyways
 
         } catch {
             write-host -fore red "Error finding $AssemblyToResolveName`: $($PSItem.exception.message)"
@@ -59,8 +59,13 @@ Adds Binding Redirects for Certain Assemblies to make them more flexibly compati
         return $null
     }
     [AppDomain]::CurrentDomain.add_AssemblyResolve($onAssemblyResolveEventHandler)
-
-    Add-Type -Path $Path
+    $Path.foreach{
+        $CurrentEAP = $ErrorActionPreference
+        $ErrorActionPreference = 'Stop'
+        [Assembly]::LoadFrom($Path)
+        $ErrorActionPreference = $CurrentEAP
+    }
+    
 
     [System.AppDomain]::CurrentDomain.remove_AssemblyResolve($onAssemblyResolveEventHandler)
 }
