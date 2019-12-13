@@ -1,0 +1,20 @@
+{
+    // When enabled, will trim trailing whitespace when you save a file.
+    "files.trimTrailingWhitespace": true,
+    "vsicons.associations.folders": [
+        {
+            "icon"      : "dist",
+            "extensions": ["BuildOutput","Output"],
+            "format"    : "svg",
+            "extends" : "dist"
+        },
+        {
+            "icon"      : "helper",
+            "extensions": ["BuildHelpers"],
+            "format"    : "svg",
+            "extends" : "helper"
+        }
+    ],
+    // We want to test for Powershell 5.1 Compatibility
+    "powershell.powerShellDefaultVersion": "Windows Powershell (x64)"
+}
