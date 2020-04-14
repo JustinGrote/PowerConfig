@@ -10,7 +10,7 @@ Adds Binding Redirects for Certain Assemblies to make them more flexibly compati
         [Parameter(Mandatory)][IO.FileInfo[]]$Path
     )
     if ($PSEdition -ne 'Desktop') {
-        write-warning "Import-Assembly is only required on Windows Powershell and not Powershell Core. Skipping..."
+        Write-Warning "Import-Assembly is only required on Windows Powershell and not Powershell Core. Skipping..."
         return
     }
 
@@ -28,30 +28,30 @@ Adds Binding Redirects for Certain Assemblies to make them more flexibly compati
             $ErrorActionPreference = 'stop'
             [String]$assemblyToResolveStrongName = $AssemblyToResolve.Name
             [String]$assemblyToResolveName = $assemblyToResolveStrongName.split(',')[0]
-            write-verbose "Import-Assembly: Resolving $AssemblyToResolveStrongName"
-            
+            Write-Verbose "Import-Assembly: Resolving $AssemblyToResolveStrongName"
+
             #Try loading from our custom assembly list
             $bindingRedirectMatch = $pathAssemblies.where{
                 $PSItem.Name -eq $assemblyToResolveName
             }
             if ($bindingRedirectMatch) {
-                write-verbose "Import-Assembly: Creating a 'binding redirect' to $BindingRedirectMatch"
+                Write-Verbose "Import-Assembly: Creating a 'binding redirect' to $BindingRedirectMatch"
                 return [reflection.assembly]::LoadFrom($bindingRedirectMatch.CodeBase)
             }
 
             #Bugfix for System.Management.Automation.resources which comes up from time to time
             #TODO: Find the underlying reason why it asks for en instead of en-us
             if ($AssemblyToResolveStrongName -like 'System.Management.Automation.Resources*') {
-                $AssemblyToResolveStrongName = $AssemblyToResolveStrongName -replace 'Culture\=en\-us','Culture=en'
-                write-verbose "BUGFIX: $AssemblyToResolveStrongName"
+                $AssemblyToResolveStrongName = $AssemblyToResolveStrongName -replace 'Culture\=en\-us', 'Culture=en'
+                Write-Verbose "BUGFIX: $AssemblyToResolveStrongName"
             }
+
             Add-Type -AssemblyName $AssemblyToResolveStrongName -ErrorAction Stop
-            
-            return [System.AppDomain]::currentdomain.GetAssemblies() | where fullname -eq $AssemblyToResolveStrongName
-            #Add Type doedsn't assume successful and return the object. This will be null if it doesn't exist and will fail resolution anyways
+            return [System.AppDomain]::currentdomain.GetAssemblies() | Where-Object fullname -eq $AssemblyToResolveStrongName
+            #Add Type doedsn't Assume successful and return the object. This will be null if it doesn't exist and will fail resolution anyways
 
         } catch {
-            write-host -fore red "Error finding $AssemblyToResolveName`: $($PSItem.exception.message)"
+            Write-Host -fore red "Error finding $AssemblyToResolveName`: $($PSItem.exception.message)"
             return $null
         }
 
@@ -59,13 +59,8 @@ Adds Binding Redirects for Certain Assemblies to make them more flexibly compati
         return $null
     }
     [AppDomain]::CurrentDomain.add_AssemblyResolve($onAssemblyResolveEventHandler)
-    $Path.foreach{
-        $CurrentEAP = $ErrorActionPreference
-        $ErrorActionPreference = 'Stop'
-        [Assembly]::LoadFrom($Path)
-        $ErrorActionPreference = $CurrentEAP
-    }
-    
+
+    Add-Type -Path $Path
 
     [System.AppDomain]::CurrentDomain.remove_AssemblyResolve($onAssemblyResolveEventHandler)
 }
@@ -88,7 +83,7 @@ try {
     }
 } catch {
     if ([String]$PSItem -match 'The member .+ is already present') {
-        write-verbose "Extension Method already present"
+        Write-Verbose "Extension Method already present"
         $return
     }
     #Write-Error $PSItem.exception
@@ -101,7 +96,7 @@ try {
     }
 } catch {
     if ([String]$PSItem -match 'The member .+ is already present') {
-        write-verbose "Extension Method already present"
+        Write-Verbose "Extension Method already present"
         $return
     }
     #Write-Error $PSItem.exception
