@@ -102,6 +102,28 @@ try {
     #Write-Error $PSItem.exception
 }
 
+#Fix a Powershell 5.1 issue where the strong type of the assembly for Microsoft.Extensions.FileProviders doesn't match
+#This creates a generic binding redirect
+#.NET Core Style Assembly Handler, where it will redirect to an already loaded assembly if present
+# $bindingRedirectHandler = [ResolveEventHandler]{
+#     param($sender,$assembly)
+#     try {
+#         Write-Debug "BindingRedirectHandler: Resolving $($assembly.name)"
+#         $assemblyShortName = $assembly.name.split(',')[0]
+#         $matchingAssembly = [System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object fullname -match ("^" + [Regex]::Escape($assemblyShortName))
+#         if ($matchingAssembly.count -eq 1) {
+#             Write-Debug "BindingRedirectHandler: Redirecting $($assembly.name) to $($matchingAssembly.Location)"
+#             return $MatchingAssembly
+#         }
+#     } catch {
+#         #Write-Error will blackhole, which is why write-host is required. This should never occur so it should be a red flag
+#         write-host -fore red "BindingRedirectHandler ERROR: $PSITEM"
+#         return $null
+#     }
+#     return $null
+# }
+# [Appdomain]::CurrentDomain.Add_AssemblyResolve($bindingRedirectHandler)
+
 
 # if ('AddYamlFile' -notin (get-typedata "Microsoft.Extensions.Configuration.ConfigurationBuilder").members.keys) {
 #     Update-TypeData -TypeName Microsoft.Extensions.Configuration.ConfigurationBuilder -MemberName AddYamlFile -MemberType ScriptMethod -Value {

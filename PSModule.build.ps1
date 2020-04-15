@@ -45,6 +45,9 @@ task PowerCD.Nuget {
             'Microsoft.Extensions.Configuration.Json' = '3.1.3'
             'Microsoft.Extensions.Configuration.EnvironmentVariables' = '3.1.3'
             'NetEscapades.Configuration.Yaml' = '2.0'
+            #These are required so that NetEscapades.Configuration.YAML doesn't downgrade them
+            'Microsoft.Extensions.Configuration' = '3.1.3'
+            'Microsoft.Extensions.Configuration.FileExtensions' = '3.1.3'
         }
         Get-PSModuleNugetDependencies $PSModuleNugetDependencies -Destination (join-path $PCDSetting.BuildModuleOutput 'lib') -NoRestore -verbose
     }
