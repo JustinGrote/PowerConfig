@@ -21,4 +21,4 @@ Check out [the demo script](./Demo)
 ![PSObjects](./images/4-PSObjects.gif)
 
 ## Realtime Info Updates
-![Realtime](./images/5-RealTimeUpdates.gif)
+![Realtime](./images/5-RealtimeUpdates.gif)
