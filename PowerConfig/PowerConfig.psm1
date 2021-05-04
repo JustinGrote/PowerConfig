@@ -102,6 +102,21 @@ try {
     #Write-Error $PSItem.exception
 }
 
+#region SourceInit
+$publicFunctions = @()
+foreach ($ScriptPathItem in 'Private','Public') {
+    $ScriptSearchFilter = [io.path]::Combine($PSScriptRoot, $ScriptPathItem, '*.ps1')
+    $ScriptExcludeFilter = {$PSItem -notlike '*.tests.ps1' -and $PSItem -notlike '*.build.ps1'}
+    Get-ChildItem $ScriptSearchFilter |
+        Where-Object -FilterScript $ScriptExcludeFilter |
+        Foreach-Object {
+            if ($ScriptPathItem -eq 'Public') {$PublicFunctions += $PSItem.BaseName}
+            . $PSItem
+        }
+}
+Export-ModuleMember -Function $publicFunctions
+#endregion SourceInit
+
 #Fix a Powershell 5.1 issue where the strong type of the assembly for Microsoft.Extensions.FileProviders doesn't match
 #This creates a generic binding redirect
 #.NET Core Style Assembly Handler, where it will redirect to an already loaded assembly if present

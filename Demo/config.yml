@@ -1,0 +1,7 @@
+ServerConfig:
+  IsAwesome: false
+  LovesDogs: "maybe?"
+  FavoriteHobby: "tennis"
+ClientConfig: 
+  IsAwesome: false
+  LovesCats: "yes"
