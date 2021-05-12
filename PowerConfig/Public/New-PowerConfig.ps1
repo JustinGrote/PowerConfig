@@ -1,4 +1,4 @@
-using namespace Microsoft.Extensions.Configuration
+using namespace Microsoft.Extensions
 
 <#
 .SYNOPSIS
@@ -9,5 +9,6 @@ function New-PowerConfig {
     param()
 
     #TODO: Intelligent Defaults
-    [ConfigurationBuilder]::new()
+    #BUG: For whatever reason, triggers on just [ConfigurationBuilder]::new()
+    [Configuration.ConfigurationBuilder]::new()
 }
