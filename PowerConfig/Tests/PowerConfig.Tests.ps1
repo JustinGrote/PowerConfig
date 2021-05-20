@@ -10,6 +10,15 @@ Describe "PowerConfig" {
         }
     }
 
+    Context "TOML" {
+        It "Reads a TOML File" {
+            $yamlConfig = New-PowerConfig | Add-PowerConfigTomlSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.toml') | Get-PowerConfig
+            $yamlConfig | Should -BeOfType System.Collections.Specialized.OrderedDictionary
+            $yamlConfig.environment.level1.level2 | Should -Be 'Level2Value'
+            $yamlConfig.override.overrideme | Should -Be 'TOML'
+        }
+    }
+
     Context "Json" {
         It "Reads a Json File" {
             $yamlConfig = New-PowerConfig | Add-PowerConfigJsonSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.json') | Get-PowerConfig
@@ -18,7 +27,7 @@ Describe "PowerConfig" {
             $yamlConfig.test.test1 | Should -Be 'test'
         }
     }
-    
+
     Context "Environment" {
         It "Processes Environment Variables" {
             $env:PowerConfigTest_Test1__OK = 5
@@ -52,7 +61,7 @@ Describe "PowerConfig" {
 
     Context "Overrides" {
         $myconfig = New-PowerConfig | Add-PowerConfigYamlSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.yaml')
-        
+
         It "Loads the base yaml file" {
             (Get-PowerConfig $myconfig).override.overrideme | Should -Be 'yaml'
             (Get-PowerConfig $myconfig).overrideme | Should -Be 'yaml'
