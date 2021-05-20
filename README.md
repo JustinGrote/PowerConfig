@@ -1,9 +1,11 @@
 # PowerConfig
 Configure your Script or Module with an overlaying config engine. Uses Microsoft.Extensions.Configuration as a backend.
 
+![PowerConfig Diagram](./images/PowerConfig.drawio.svg)
+
 Users can configure your module or script from a variety of sources: multiple json files, yaml files, command line parameters, environment variables, etc. and this gives you a simple unified and merged key-value pair table for all of those configuration points.
 
-If you have ever used ASP.NET configuration this will seem very familiar because it is the same engine :)
+If you have ever used [ASP.NET Configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-5.0) this will seem very familiar because it is the same engine 😊.
 
 # Demo
 Check out [the demo script](./Demo)
