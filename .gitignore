@@ -1,1 +1,4 @@
 BuildOutput/
+/bin/
+/obj/
+/PowerConfig/lib/

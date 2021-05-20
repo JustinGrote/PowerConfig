@@ -6,6 +6,8 @@ $c = New-PowerConfig
 #Show the result
 $c | Out-Default
 
+
+### JSON ###
 Write-Host -fore Green "Now we add our JSON config"
 $c | Add-PowerConfigJsonSource -Path (Resolve-Path config.json) | Out-Null
 
@@ -21,6 +23,8 @@ $settings | Out-Default | Write-Host
 Write-Host "==ServerConfig=="
 $settings.ServerConfig | Out-Default | Write-Host
 
+
+### YAML ###
 Write-Host -fore Green "Now we add a YAML config"
 $c | Add-PowerConfigYamlSource -Path (Resolve-Path config.yml) | Out-Null
 #Show the result
@@ -37,6 +41,21 @@ Write-Host "==ServerConfig=="
 Write-Host -fore Cyan "Note: LovesDogs and IsAwesome were overwritten, and FavoriteHobby was added"
 $settings.ServerConfig | Out-Default | Write-Host
 
+
+### TOML ###
+Write-Host -fore Green "Now a TOML config, why not"
+$c | Add-PowerConfigTomlSource -Path (Resolve-Path config.toml) | Out-Null
+#Show the result
+$c.sources | ft @{N='SourceType';E={$PSItem.Gettype().Name}},'Path'
+
+Write-Host -fore Cyan "Even more stuff added!"
+$settings = $c | Get-PowerConfig
+Write-Host "==ServerConfig=="
+Write-Host -fore Cyan "Note: LovesFerrets was added"
+$settings.ServerConfig | Out-Default | Write-Host
+
+
+### Environment Variables ###
 Write-Host -fore Green "Lets start accepting environment variables!"
 $c | Add-PowerConfigEnvironmentVariableSource -Prefix 'PCDEMO_' | Out-Null
 
@@ -47,6 +66,8 @@ Write-Host -fore Cyan "LovesDogs has changed based on the environment variable!"
 Write-Host "==ServerConfig=="
 $c | Get-PowerConfig | % ServerConfig | Out-Default | Write-Host
 
+
+### Powershell Objects ###
 Write-Host -fore Green "We can also use Powershell objects, either directly or imported from a .psd1! (This gets converted into json on the backend)"
 
 $myconfig = Import-PowerShellDataFile ./config.psd1
@@ -59,3 +80,4 @@ $c | Get-PowerConfig | % ServerConfig | Out-Default | Write-Host
 
 
 Write-Host "Now try changing the config files, the merged config will automatically update as config files are processed"
+$c | Get-PowerConfig | % ServerConfig | Out-Default | Write-Host
