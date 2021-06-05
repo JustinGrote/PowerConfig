@@ -1,5 +1,7 @@
 Describe "PowerConfig" {
-    if ($env:PowerCDModuleManifest) {Import-Module $env:PowerCDModuleManifest -Force}
+    BeforeAll {
+        Import-Module (Resolve-Path $PSScriptRoot\..\PowerConfig.psd1) -Force
+    }
 
     Context "Yaml" {
         It "Reads a Yaml File" {
@@ -53,14 +55,17 @@ Describe "PowerConfig" {
     Context "Object" {
         It "Accepts a generic Object" {
             $h = @{test1=1;test2=2;test3=@{test4=4}}
-            $objConfig = Add-PowerConfigObject -InputObject (New-PowerConfig) -Object $h | Get-PowerConfig
+            $c = New-PowerConfig
+            $objConfig = Add-PowerConfigObject -InputObject $c -Object $h | Get-PowerConfig
             $objConfig.test1 | Should -Be 1
             $objConfig.test3.test4 | Should -Be 4
         }
     }
 
     Context "Overrides" {
-        $myconfig = New-PowerConfig | Add-PowerConfigYamlSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.yaml')
+        BeforeAll {
+            $myconfig = New-PowerConfig | Add-PowerConfigYamlSource -Path (Join-Path $PSScriptRoot 'Mocks/Test.yaml')
+        }
 
         It "Loads the base yaml file" {
             (Get-PowerConfig $myconfig).override.overrideme | Should -Be 'yaml'
@@ -74,7 +79,7 @@ Describe "PowerConfig" {
         }
 
         It "Loads a generic PSObject and overrides existing values" {
-            $myconfig | Add-PowerConfigObject -Object ([PSCustomObject]@{overrideme='psobject';override=@{overrideme='psobject'}})
+            $myconfig | Add-PowerConfigObject -Object (@{overrideme='psobject';override=@{overrideme='psobject'}})
             (Get-PowerConfig $myconfig).override.overrideme | Should -Be 'psobject'
             (Get-PowerConfig $myconfig).overrideme | Should -Be 'psobject'
         }
@@ -92,7 +97,9 @@ Describe "PowerConfig" {
     }
 
     Context "Complex Settings Object" {
-        $myConfig = New-PowerConfig | Add-PowerConfigObject -Object (Import-Clixml -Path (Join-Path $PSScriptRoot 'Mocks/SettingsExample.clixml')) | Get-PowerConfig
+        BeforeAll {
+            $myConfig = New-PowerConfig | Add-PowerConfigObject -Object (Import-Clixml -Path (Join-Path $PSScriptRoot 'Mocks/SettingsExample.clixml')) | Get-PowerConfig
+        }
         It "Loads the Object Config" {
             $myConfig | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
         }

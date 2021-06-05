@@ -1,5 +1,8 @@
 #Taken with love from https://github.com/austoonz/Convert/blob/master/src/Convert/Public/ConvertFrom-StringToMemoryStream.ps1
 
+
+function ConvertFrom-StringToMemoryStream
+{
 <#
     .SYNOPSIS
         Converts a string to a MemoryStream object.
@@ -57,8 +60,6 @@
     .LINK
         http://convert.readthedocs.io/en/latest/functions/ConvertFrom-StringToMemoryStream/
 #>
-function ConvertFrom-StringToMemoryStream
-{
     [CmdletBinding(HelpUri = 'http://convert.readthedocs.io/en/latest/functions/ConvertFrom-StringToMemoryStream/')]
     param
     (

@@ -106,7 +106,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = ''
             # Extensions = @(
             #     @{
             #         Module = "Plaster"
