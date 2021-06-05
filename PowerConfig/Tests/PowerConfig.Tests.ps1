@@ -85,6 +85,7 @@ Describe "PowerConfig" {
         }
 
         It "Detects an environment variable change and processes the override" {
+            #TODO: Allow this test to run standalone
             $ENV:PowerConfigPester_overrideme = $null
             $ENV:PowerConfigPester_override__overrideme = $null
             $myConfig | Add-PowerConfigEnvironmentVariableSource -Prefix 'PowerConfigPester_'
