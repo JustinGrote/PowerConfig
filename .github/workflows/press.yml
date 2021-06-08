@@ -36,17 +36,17 @@ jobs:
           # Required for GitVersion
           #TODO: Calculate fetch depth up to the parent branch's last version tag (this is all gitversion really needs)
           fetch-depth: 0
-      - name: 🔗 Cache Powershell Modules
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/Documents/Powershell/Modules
-            ~/Documents/WindowsPowershell/Modules
-            ~/.local/share/powershell/Modules
-            ~/.local/share/Press
-            ~/AppData/Local/Press
-            ~/.nuget/packages/gitversion.tool
-          key: build-${{ hashFiles('Source/Config/RequiredModules.psd1') }}
+      # - name: 🔗 Cache Powershell Modules
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/Documents/Powershell/Modules
+      #       ~/Documents/WindowsPowershell/Modules
+      #       ~/.local/share/powershell/Modules
+      #       ~/.local/share/Press
+      #       ~/AppData/Local/Press
+      #       ~/.nuget/packages/gitversion.tool
+      #     key: build-${{ hashFiles('Source/Config/RequiredModules.psd1') }}
 
       - if: steps.debugStatus.outputs.stepDebug
         name: 🔬 Powershell Environment Information
