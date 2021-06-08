@@ -1,5 +1,11 @@
 #requires -version 7
-Import-Module (Resolve-Path $PSScriptRoot/../Press/BuildOutput/Press/Press.psd1) -Force
+$PressTestBuildPath = "$PSScriptRoot/../Press/BuildOutput/Press/Press.psd1"
+if (Test-Path $PressTestBuildPath) {
+    Import-Module (Resolve-Path $PSScriptRoot/../Press/BuildOutput/Press/Press.psd1) -Force
+} else {
+    Install-Module Press -AllowPrerelease -Force -AcceptLicense -PassThru
+    Import-Module Press
+}
 . Press.Tasks
 
 Task CopyLoadAssembliesBootstrapScript -After 'Press.CopyModuleFiles' {
