@@ -62,9 +62,6 @@ Export-ModuleMember -Function $publicFunctions
 #Fix a Powershell 5.1 issue where the strong type of the assembly for Microsoft.Extensions.FileProviders doesn't match
 #This creates a generic binding redirect
 #.NET Core Style Assembly Handler, where it will redirect to an already loaded assembly if present
-if ($PSEdition -eq 'Desktop') {
-    Register-BindingRedirectHandler
-}
 # TODO: Figure out how to use this binding handler with classes
 
 
