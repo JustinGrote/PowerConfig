@@ -5,6 +5,8 @@ if (Test-Path $PressTestBuildPath) {
 } else {
     Install-Module Press -AllowPrerelease -Force -AcceptLicense -PassThru
     Import-Module Press
+    Install-Module PowerConfig -Force -AcceptLicense -PassThru
+    Import-Module PowerConfig
 }
 . Press.Tasks
 
