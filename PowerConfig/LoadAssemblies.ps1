@@ -41,10 +41,10 @@ if ($PSEdition -ne 'Desktop') {
     [Appdomain]::CurrentDomain.Add_AssemblyResolve($bindingRedirectHandler)
 }
 
-$libroot = "$PSScriptRoot/../lib"
+$libroot = "$PSScriptRoot/lib"
 
 #If this is a "debug build", use the assemblies from buildoutput
-$debugLibPath = "$PSScriptRoot/../../BuildOutput/PowerConfig/lib"
+$debugLibPath = "$PSScriptRoot/../BuildOutput/PowerConfig/lib"
 if (Test-Path $debugLibPath) {
     $libroot = Resolve-Path $debugLibPath
 }

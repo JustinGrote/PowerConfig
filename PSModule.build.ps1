@@ -10,13 +10,6 @@ if (Test-Path $PressTestBuildPath) {
 }
 . Press.Tasks
 
-Task CopyLoadAssembliesBootstrapScript -After 'Press.CopyModuleFiles' {
-    $destination = "$($PressSetting.Build.ModuleOutDir)/Scripts/LoadAssemblies.ps1"
-    #This will create the intermediate scripts directory as well
-    New-Item -ItemType Directory -Path (Split-Path $destination) -Force | Write-Verbose
-    Copy-Item "$($PressSetting.General.SrcRootDir)/Scripts/LoadAssemblies.ps1" $destination -force
-}
-
 Task RestoreNugetPackages -After 'Press.CopyModuleFiles' {
     #We want a newer target for Net5 because it uses System.Text.Json among other really good improvements
     $Net5Target = @{
@@ -42,4 +35,28 @@ Task RestoreNugetPackages -After 'Press.CopyModuleFiles' {
     Restore-PressNugetPackages -Packages $NetStandardTarget -Target 'net461' -Destination (join-path $PressSetting.Build.ModuleOutDir 'lib/winps') -NoRestore -verbose
 }
 
-#FIXME: Copy the bindingredirecthandler
+#TODO: Fix the custom exclude to work in Press
+Task Press.CopyModuleFiles @{
+    Inputs  = {
+        Get-ChildItem -File -Recurse $PressSetting.General.SrcRootDir
+    }
+    Outputs = {
+        $buildItems = Get-ChildItem -File -Recurse $PressSetting.Build.ModuleOutDir
+        if ($buildItems) { $buildItems } else { 'EmptyBuildOutputFolder' }
+    }
+    #(Join-Path $PressSetting.BuildEnvironment.BuildOutput $ProjectName)
+    Jobs    = {
+        Remove-BuildItem $PressSetting.Build.ModuleOutDir
+
+        $copyResult = Copy-PressModuleFiles @commonParams `
+            -Destination $PressSetting.Build.ModuleOutDir `
+            -PSModuleManifest $PressSetting.BuildEnvironment.PSModuleManifest `
+            -PSFileExclude @( #This is what changed
+                '*.*.ps1'
+                'LoadAssemblies.ps1'
+            ) `
+            -Include "PowerConfig/LoadAssemblies.ps1"
+
+        $PressSetting.OutputModuleManifest = $copyResult.OutputModuleManifest
+    }
+}
