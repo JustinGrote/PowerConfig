@@ -10,9 +10,9 @@ if ($PSDebugBuild) {
 
 $libPath = Resolve-Path $(
     if ($PSEdition -eq 'Desktop') {
-        "$libroot/netstandard2.0"
+        "$libroot/winps"
     } else {
-        "$libroot/net5.0"
+        "$libroot/pwsh"
     }
 )
 Write-Verbose "Loading PowerConfig Assemblies from $libPath"
@@ -62,24 +62,10 @@ Export-ModuleMember -Function $publicFunctions
 #Fix a Powershell 5.1 issue where the strong type of the assembly for Microsoft.Extensions.FileProviders doesn't match
 #This creates a generic binding redirect
 #.NET Core Style Assembly Handler, where it will redirect to an already loaded assembly if present
-# $bindingRedirectHandler = [ResolveEventHandler]{
-#     param($sender,$assembly)
-#     try {
-#         Write-Debug "BindingRedirectHandler: Resolving $($assembly.name)"
-#         $assemblyShortName = $assembly.name.split(',')[0]
-#         $matchingAssembly = [System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object fullname -match ("^" + [Regex]::Escape($assemblyShortName))
-#         if ($matchingAssembly.count -eq 1) {
-#             Write-Debug "BindingRedirectHandler: Redirecting $($assembly.name) to $($matchingAssembly.Location)"
-#             return $MatchingAssembly
-#         }
-#     } catch {
-#         #Write-Error will blackhole, which is why write-host is required. This should never occur so it should be a red flag
-#         write-host -fore red "BindingRedirectHandler ERROR: $PSITEM"
-#         return $null
-#     }
-#     return $null
-# }
-# [Appdomain]::CurrentDomain.Add_AssemblyResolve($bindingRedirectHandler)
+if ($PSEdition -eq 'Desktop') {
+    Register-BindingRedirectHandler
+}
+
 
 
 # if ('AddYamlFile' -notin (get-typedata "Microsoft.Extensions.Configuration.ConfigurationBuilder").members.keys) {

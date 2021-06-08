@@ -3,7 +3,9 @@ using namespace Microsoft.Extensions.Configuration.Memory
 using namespace System.Collections
 using namespace System.Collections.Generic
 
-class HashTableConfigurationProvider : ConfigurationProvider {
+# Powershell 5.1 using namespace doesn't work with classes unfortunately
+
+class HashTableConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider {
     hidden [HashTableConfigurationSource]$source
 
     HashTableConfigurationProvider ($source) {
@@ -14,14 +16,14 @@ class HashTableConfigurationProvider : ConfigurationProvider {
     }
 }
 
-class HashTableConfigurationSource : IConfigurationSource {
+class HashTableConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource {
     #The hashtable reference that will be used for the memoryconfigsource
     [hashtable]$hashtable
     HashTableConfigurationSource ([hashtable]$hashtable) {
         $this.hashtable = $hashtable
     }
 
-    [IConfigurationProvider] Build([IConfigurationBuilder]$builder) {
+    [Microsoft.Extensions.Configuration.IConfigurationProvider] Build([Microsoft.Extensions.Configuration.IConfigurationBuilder]$builder) {
         return [HashTableConfigurationProvider]::new($this)
     }
 }
