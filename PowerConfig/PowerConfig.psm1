@@ -1,30 +1,3 @@
-
-#PSES on Windows 5.1 is currently unsupported
-try {
-    if ([Microsoft.Extensions.Configuration.ConfigurationBuilder].Assembly.Location -match 'PowershellEditorServices') {
-        throw [NotSupportedException]'Sorry, PowerConfig is currently not supported if Powershell Editor Services is loaded on Windows Powershell due to a conflict. See: https://github.com/PowerShell/PowerShellEditorServices/issues/1499'
-    }
-} catch {
-    if ($PSItem.FullyQualifiedErrorId -ne 'TypeNotFound') {throw}
-}
-
-$libroot = Resolve-Path "$PSScriptRoot/lib"
-
-#If this is a "debug build", use the assemblies from buildoutput
-if (Test-Path "$PSScriptRoot/../BuildOutput/PowerConfig/lib") {
-    $libroot = Resolve-Path "$PSScriptRoot/../BuildOutput/PowerConfig/lib"
-}
-
-$libPath = Resolve-Path $(
-    if ($PSEdition -eq 'Desktop') {
-        "$libroot/winps"
-    } else {
-        "$libroot/pwsh"
-    }
-)
-Write-Verbose "Loading PowerConfig Assemblies from $libPath"
-Add-Type -Path "$libPath/*.dll"
-
 try {
     Update-TypeData -Erroraction Stop -TypeName Microsoft.Extensions.Configuration.ConfigurationBuilder -MemberName AddYamlFile -MemberType ScriptMethod -Value {
         param([String]$Path)
