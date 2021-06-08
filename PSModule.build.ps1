@@ -9,6 +9,6 @@ Task RestoreNugetPackages -After 'Press.CopyModuleFiles' {
         'Alexinea.Extensions.Configuration.Toml'                  = '5.0.0'
         'Alexinea.Extensions.Configuration.Yaml'                  = '5.0.0'
     }
-    Restore-PressNugetPackages -Packages $PSModuleNugetDependencies -Target 'net461' -Destination (join-path $PressSetting.Build.ModuleOutDir 'lib/winps') -NoRestore -verbose
     Restore-PressNugetPackages -Packages $PSModuleNugetDependencies -Target 'net5.0' -Destination (join-path $PressSetting.Build.ModuleOutDir 'lib/pwsh') -NoRestore -verbose
+    Restore-PressNugetPackages -Packages $PSModuleNugetDependencies -Target 'net461' -Destination (join-path $PressSetting.Build.ModuleOutDir 'lib/winps') -NoRestore -verbose
 }

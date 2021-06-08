@@ -65,7 +65,7 @@ Export-ModuleMember -Function $publicFunctions
 if ($PSEdition -eq 'Desktop') {
     Register-BindingRedirectHandler
 }
-
+# TODO: Figure out how to use this binding handler with classes
 
 
 # if ('AddYamlFile' -notin (get-typedata "Microsoft.Extensions.Configuration.ConfigurationBuilder").members.keys) {
