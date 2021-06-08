@@ -12,6 +12,7 @@ function Add-PowerConfigObject {
         $JsonTempFile = [io.path]::GetTempFileName()
     )
 
+    $WarningPreference = 'SilentlyContinue'
     $ObjectJson = $Object | ConvertTo-Json -Compress -ErrorAction Stop | Out-File -FilePath $JsonTempFile
     [JsonConfigurationExtensions]::AddJsonFile($InputObject,$JsonTempFile)
 
