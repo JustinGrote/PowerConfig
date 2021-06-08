@@ -3,10 +3,10 @@ $PressTestBuildPath = "$PSScriptRoot/../Press/BuildOutput/Press/Press.psd1"
 if (Test-Path $PressTestBuildPath) {
     Import-Module (Resolve-Path $PSScriptRoot/../Press/BuildOutput/Press/Press.psd1) -Force
 } else {
-    Install-Module Press -AllowPrerelease -Force -AcceptLicense -PassThru
-    Import-Module Press
     Install-Module PowerConfig -Force -AcceptLicense -PassThru
     Import-Module PowerConfig
+    Install-Module Press -AllowPrerelease -Force -AcceptLicense -PassThru
+    Import-Module Press
 }
 . Press.Tasks
 
