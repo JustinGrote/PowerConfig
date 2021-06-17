@@ -1,0 +1,12 @@
+{
+    "ZooName": "CritterLand",
+    "ZooLocation": {
+        "City": "Anytown",
+        "State": "🎸USA🎸"
+    },
+    "Exhibits": {
+        "Africa": "Zebra 🦓",
+        "Polar": "Polar Bear 🐻",
+        "Cave": "Bat 🦇"
+    }
+}
